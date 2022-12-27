@@ -19,7 +19,11 @@ var_dump($DBLogin, SITE_USER, SITE_BACKUP);
 
 $filename=SITE_BACKUP .'_'.date('y_m_d-H_i_s').'.sql';
 
-$result=exec('mysqldump '. $DBName .' --password='. $DBPassword .' --user=' . $DBLogin . ' --host=127.0.0.1 --port=3311' . ' --single-transaction >' . SITE_DUMP_PATH . $filename,$output);
+$arDBHost = explode(':', $DBHost);
+$Host = $arDBHost[0];
+$Port = $arDBHost[1];
+
+$result=exec('mysqldump '. $DBName .' --password='. $DBPassword .' --user=' . $DBLogin . ' --host=' . $Host . ' --port=' . $Port . ' --single-transaction >' . SITE_DUMP_PATH . $filename,$output);
 
 if(empty($output)){
 	echo "БЭКАП ЗАВЕРШЁН \n";
@@ -35,6 +39,8 @@ $result=exec('tar -czf ' . $tarball . ' ' . $site_path ,$output);
 	echo "$ filename: ".$filename." \n";
 	echo "$ tarball: ".$tarball." \n";
 	echo "$ site_path: ".$site_path." \n";
+	echo "$ Host: ".$Host." \n";
+	echo "$ Port: ".$Port." \n";
 	echo "SITE_USER: ".SITE_USER." \n";
 	echo "SITE_BACKUP: ".SITE_BACKUP." \n";
 	echo "SITE_DUMP_PATH: ".SITE_DUMP_PATH." \n";
